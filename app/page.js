@@ -1,4 +1,4 @@
-'use client'; // <-- ADD THIS AT THE TOP
+'use client'; // Must be the very first line
 
 import React, { useState } from 'react';
 import projects from '../data/projects.json';
@@ -19,12 +19,18 @@ export default function Home() {
       const txResp = await fetch(`${API_BASE}?module=account&action=txlist&address=${addr}`);
       const txJson = await txResp.json();
       const txs = Array.isArray(txJson.result) ? txJson.result : [];
+      const txCount = txs.length;
       const toAddresses = new Set(txs.map(t => t.to?.toLowerCase()).filter(Boolean));
 
       const resultsTemp = projects.map(p => {
         const interacted = p.contract && toAddresses.has(p.contract.toLowerCase());
-        const eligible = interacted || txs.length > 0;
-        return { name: p.name, interacted, eligible, weight: p.weight || 20 };
+        const eligible = interacted || txCount > 0;
+        return {
+          name: p.name,
+          interacted,
+          eligible,
+          weight: p.weight || 20,
+        };
       });
 
       const totalScore = resultsTemp.reduce((sum, r) => sum + (r.eligible ? r.weight : 0), 0);
@@ -32,6 +38,7 @@ export default function Home() {
       setScore(totalScore);
     } catch (err) {
       console.error(err);
+      alert('Error fetching on-chain data. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -39,7 +46,7 @@ export default function Home() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!address.startsWith('0x')) return alert('Enter a valid address');
+    if (!address.startsWith('0x')) return alert('Enter a valid Base wallet address');
     checkEligibility(address.trim());
   };
 
@@ -48,7 +55,7 @@ export default function Home() {
       <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-2xl p-6">
         <h1 className="text-2xl font-bold mb-2">BaseDrop Scout</h1>
         <p className="text-sm text-gray-600 mb-4">
-          Check Base ecosystem airdrop readiness (read-only, no wallet connect)
+          Check your Base ecosystem airdrop readiness (read-only, no wallet connect)
         </p>
 
         <form onSubmit={handleSubmit} className="flex gap-2 mb-4">
