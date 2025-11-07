@@ -1,8 +1,0 @@
-
-[
-  { "name": "Aerodrome", "contract": "0xcF4b2dDb5E08A1D7c9B8b66a6C776A1f6D45bF2A", "weight": 25 },
-  { "name": "Friend.tech", "contract": "0xFC4bC90f36cA7d7Dd5EbdB5E6Af70Aa26F4A69C3", "weight": 25 },
-  { "name": "BaseSwap", "contract": "0x7A3aE3Ef57d0B1A81bE4b6A4DdA32B7b9b5C97B7", "weight": 20 },
-  { "name": "Degen", "contract": "0x7fB3E0b52e5E9dC6F81B4B87B39C620cfB302b0B", "weight": 15 },
-  { "name": "Parallel Base", "contract": "0xB582B1f3E19eEe5C9b3aA8e9eE3D44bE9C80c0b2", "weight": 15 }
-]
